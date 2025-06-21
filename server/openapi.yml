@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: Starfleet Registry API
+  version: 1.0.0
+  description: |
+    A playful CRUD service for registering, updating, listing, and de-commissioning Federation starships.
+
+servers:
+  - url: http://localhost:4000
+    description: Local dev
+
+tags:
+  - name: Starships
+    description: Fleet registry operations
+
+paths:
+  /starfleet/starships:
+    get:
+      summary: List all starships
+      tags: [Starships]
+      responses:
+        '200':
+          description: Array of starships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Starship'
+    post:
+      summary: Register a new starship
+      tags: [Starships]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StarshipCreate'
+            example:
+              registryNumber: NCC-74656
+              name: Voyager
+              class: Intrepid
+              commissioned: 2371-02-14
+      responses:
+        '201':
+          description: Starship created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Starship'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /starfleet/starships/{registry}:
+    parameters:
+      - $ref: '#/components/parameters/RegistryNumber'
+    get:
+      summary: Get a single starship
+      tags: [Starships]
+      responses:
+        '200':
+          description: A starship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Starship'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a starship
+      tags: [Starships]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StarshipUpdate'
+      responses:
+        '200':
+          description: Updated starship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Starship'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Decommission a starship
+      tags: [Starships]
+      responses:
+        '200':
+          description: Deletion result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    example: true
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  parameters:
+    RegistryNumber:
+      name: registry
+      in: path
+      required: true
+      description: Unique hull registry (e.g. NCC-1701-D)
+      schema:
+        type: string
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Starship:
+      type: object
+      required: [registryNumber, name, class, commissioned, status]
+      properties:
+        registryNumber:
+          type: string
+          example: NCC-1701-D
+        name:
+          type: string
+          example: Enterprise
+        class:
+          type: string
+          example: Galaxy
+        commissioned:
+          type: string
+          format: date
+          example: 2363-10-04
+        status:
+          type: string
+          enum: [ACTIVE, MUSEUM, DESTROYED]
+          example: ACTIVE
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    StarshipCreate:
+      allOf:
+        - $ref: '#/components/schemas/Starship'
+        - required: [registryNumber, name, class, commissioned]
+        - properties:
+            status:
+              readOnly: true
+
+    StarshipUpdate:
+      type: object
+      properties:
+        name:         { type: string }
+        class:        { type: string }
+        commissioned: { type: string, format: date }
+        status:
+          type: string
+          enum: [ACTIVE, MUSEUM, DESTROYED]
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
