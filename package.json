@@ -1,0 +1,25 @@
+{
+  "name": "starfleet-registry",
+  "version": "1.0.0",
+  "description": "A full-stack sandbox that lets you **register, update, list, and de-commission Federation starships**.",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon src/app.js",
+    "client": "cd client && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anjupathak03/starship-registry.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/anjupathak03/starship-registry/issues"
+  },
+  "homepage": "https://github.com/anjupathak03/starship-registry#readme",
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

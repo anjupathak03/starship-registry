@@ -1,50 +1,13 @@
-#  Starfleet Registry
+# Starfleet Registry 🚀
 
-A full-stack sandbox that lets you **register, update, list, and de-commission Federation starships**.
+A full-stack demo that tracks Starfleet starships.
 
----
-
-## 📂 Monorepo layout
-
-```text
-starship-registry/
-├─ client/                # Next.js UI
-│  └─ …                  
-├─ server/                # Express API
-│  └─ …                   
-└─ README.md
-```
-
----
-
-## ⚡ Quick-start
-
-### 1. Prerequisites
-
-* **Node**
-* **npm**
-* **MongoDB** running locally (`mongodb://localhost:27017`)
-
-### 2. Clone & install
-
-```bash
-git clone https://github.com/your-handle/starship-registry.git
-cd starship-registry
-
-# install root-level git hooks / lint configs (optional)
-npm install
-
-# install each workspace
-npm --workspace server install
-npm --workspace client install
-```
-
-### 3. Environment variables
-
-| File                | Purpose                                                         |
-| ------------------- | --------------------------------------------------------------- |
-| `server/.env`       | `MONGO_URI=mongodb://localhost:27017/starfleet` <br>`PORT=4000` |
-| `client/.env.local` | `NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/starfleet`      |
+| Layer | Tech |
+|-------|------|
+| **API** | REST, documented in [`openapi.yml`](server/openapi.yml) |
+| **Server** | Node · Express · MongoDB (Mongoose) |
+| **Client** | Next.js · React · Tailwind |
+| **Tests** | Jest · Supertest · mongodb-memory-server |
 
 ---
 
@@ -58,15 +21,73 @@ npm --workspace client install
 | `PUT`    | `/starfleet/starships/{registry}` | Update starship details |
 | `DELETE` | `/starfleet/starships/{registry}` | De-commission (delete)  |
 
-See [`openapi.yaml`](./openapi.yaml) for the full contract (plug it into **Swagger UI** or **Insomnia**).
+---
+
+## 🔧 Getting Started
+
+### Prerequisites
+
+* Node >= 18
+* A local MongoDB instance *or* Docker Desktop
+
+### 1  Clone
+
+```bash
+git clone https://github.com/YOUR_HANDLE/starfleet-registry.git
+cd starfleet-registry
+```
+
+### 2  Server
+
+```bash
+cd server
+cp .env.example .env              # contains MONGO_URI=mongodb://localhost:27017/starfleet
+npm install
+npm run dev                       # nodemon on :4000
+```
+
+### 3  Client
+
+```bash
+cd ../client
+cp .env.example .env
+npm install
+npm run dev                       # Next.js on :3000
+```
+
+Open `http://localhost:3000` 
 
 ---
 
-## 🛠️ Scripts cheat-sheet
+## 🧪 Running Tests
 
-| Command (root)       | Action                                            |
-| -------------------- | ------------------------------------------------- |
-| `npm run server` | Nodemon + Express hot-reload                      |
-| `npm run client` | Next.js dev server                                |
-| `npm run build`      | `server/dist` + `client/.next` production bundles |
+```bash
+cd server
+npm test            # Jest with coverage
+```
+
+The run spins up an **in-memory MongoDB**, so no local database is touched.
+
+### Coverage
+
+
+Total coverage: **85%** line (see full report in `server/coverage/`).
+
+---
+
+## 🛠️ Scripts
+
+| Command                | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| `npm run dev`          | Hot-reload Express server (nodemon) |
+| `npm start`            | Production server                   |
+| `npm test`             | Jest + coverage                     |
+| `client/npm run dev`   | Next.js with Turbopack              |
+| `client/npm run build` | Static production build             |
+
+---
+
+## 📜 API Reference
+
+See [`server/openapi.yml`](server/openapi.yml) or browse the live Swagger UI at `http://localhost:4000/api-docs`.
 
