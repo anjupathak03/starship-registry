@@ -70,6 +70,7 @@ The run spins up an **in-memory MongoDB**, so no local database is touched.
 
 ### Coverage
 
+![Screenshot 2025-06-24 002013](https://github.com/user-attachments/assets/4842a8c8-71ce-46f3-9723-d50ca2e5df99)
 
 Total coverage: **85%** line (see full report in `server/coverage/`).
 
