@@ -1,11 +1,10 @@
-
 name: Keploy API Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -13,6 +12,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '6.0'
+          mongodb-port: 27017
+
+      - name: Create .env file
+        run: cp .env.example .env
+        working-directory: ./server
+
+      - name: Install Server Dependencies
+        run: npm install
+        working-directory: ./server
+
+      - name: Start Server in Background
+        run: npm start &
+        working-directory: ./server
+
       - name: Install Keploy CLI
         run: |
           curl --silent -L https://keploy.io/ent/install.sh | bash

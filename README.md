@@ -59,6 +59,14 @@ Open `http://localhost:3000`
 
 ---
 
+## Keploy API Test Generation
+
+I downloaded the Keploy agent for my Windows machine to generate and run tests locally. Below is the screenshot of the test run reports page: 
+
+
+
+Additionally, I have integrated Keploy API tests into the CI/CD pipeline. The configuration details can be found in the .github/workflows/ci.yml file.
+
 ## 🧪 Running Tests
 
 ```bash
